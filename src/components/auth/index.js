@@ -1,27 +1,30 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { errorHelper } from "../../utils/tools";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+import { registerUser, signInUser} from "../../store/actions/users";
+
 const Auth = () => {
+  // comp
   const [register, setRegister] = useState(false);
+  // redux
+  const users = useSelector((state) => state.users);
+  const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues: { email: "", passsword: "" },
+    initialValues: { email: "tester@abv.bg", password: "777733" },
     validationSchema: Yup.object({
       email: Yup.string()
-        .required("Sorry email is required")
-        .email("This is not valid email"),
-      password: Yup.string()
-        .required("Password is required")
-        .min(4, "Password must be at least 4 characters long")
-        .max(10, "Password must be less of 10 characters long"),
+        .required("Sorry the email is required")
+        .email("This is not a valid email"),
+      password: Yup.string().required("Sorry the password is required"),
     }),
     onSubmit: (values) => {
       handleSubmit(values);
@@ -30,9 +33,9 @@ const Auth = () => {
 
   const handleSubmit = (values) => {
     if (register) {
-      console.log(values, "register");
+      dispatch(registerUser(values));
     } else {
-      console.log(values, "sign in");
+      dispatch(signInUser(values));
     }
   };
 
@@ -47,38 +50,40 @@ const Auth = () => {
         onSubmit={formik.handleSubmit}
       >
         <TextField
-         name="email"
-         label="Enter your email"
-         variant='outlined'
-         {...formik.getFieldProps('email')}
-         {...errorHelper(formik, 'email')}
+          name="email"
+          label="Enter your email"
+          variant="outlined"
+          {...formik.getFieldProps("email")}
+          {...errorHelper(formik, "email")}
         />
 
         <TextField
           name="password"
           label="Enter your password"
           type="password"
-          variant='outlined'
-          {...formik.getFieldProps('password')}
-          {...errorHelper(formik,'password')}
+          variant="outlined"
+          {...formik.getFieldProps("password")}
+          {...errorHelper(formik, "password")}
         />
 
         <div className="mt-2">
-            <Button 
-               variant="contained" 
-               color="primary" 
-               type="submit" 
-               size="large">
-               {register ? 'Register' : 'Login'}
-            </Button>
-            <Button 
-               className="mt-3"
-               variant="outlined" 
-               color="secondary" 
-               size="small"
-               onClick={()=>setRegister(!register)}>
-               Want to  {!register ? 'Register' : 'Login'}
-            </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            size="large"
+          >
+            {register ? "Register" : "Login"}
+          </Button>
+          <Button
+            className="mt-3"
+            variant="outlined"
+            color="secondary"
+            size="small"
+            onClick={() => setRegister(!register)}
+          >
+            Want to {!register ? "Register" : "Login"}
+          </Button>
         </div>
       </Box>
     </div>
