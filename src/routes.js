@@ -10,6 +10,8 @@ import Header from "./components/navigation/header";
 import MainLayout from "./hoc/mainLayout";
 import Auth from "./components/auth";
 import Dashboard from "./components/dashboard/idnex";
+import AdminArticles from "./components/dashboard/articles";
+import AdminProfile from "./components/dashboard/profile";
 
 import AuthGuard from "./hoc/authGuard";
 
@@ -18,15 +20,15 @@ const Router = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(isAuth());
-  },[]);
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (users.auth !== null) {
       setLoading(false);
     }
-  },[users]);
+  }, [users]);
 
   return (
     <BrowserRouter>
@@ -37,11 +39,16 @@ const Router = () => {
           <Header />
           <MainLayout>
             <Routes>
-              <Route path="/dashboard" element={
-                <AuthGuard>
-                   <Dashboard/>
-                </AuthGuard>
-              } />
+              <Route
+                path="/dashboard"
+                element={
+                  <AuthGuard>
+                    <Dashboard />
+                  </AuthGuard>
+                }>
+                  <Route path="profile" element={<AdminProfile/>}/>
+                  <Route path="articles" element={<AdminArticles/>}/>
+                </Route>
               <Route path="/auth" element={<Auth />} />
               <Route path="/" element={<Home />} />
             </Routes>
