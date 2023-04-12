@@ -11,6 +11,8 @@ import MainLayout from "./hoc/mainLayout";
 import Auth from "./components/auth";
 import Dashboard from "./components/dashboard/idnex";
 
+import AuthGuard from "./hoc/authGuard";
+
 const Router = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -35,7 +37,11 @@ const Router = () => {
           <Header />
           <MainLayout>
             <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={
+                <AuthGuard>
+                   <Dashboard/>
+                </AuthGuard>
+              } />
               <Route path="/auth" element={<Auth />} />
               <Route path="/" element={<Home />} />
             </Routes>

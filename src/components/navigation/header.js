@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import SideDrawer from './sideNavigation';
 
@@ -11,6 +11,7 @@ const Header = () => {
     const users = useSelector(state=>state.users);
     const notifications = useSelector(state=> state.notifications);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         let { global } = notifications;
@@ -30,6 +31,7 @@ const Header = () => {
 
     const signOurUser = () => {
        dispatch(signOut());
+       navigate('/');
     };
 
     return(
