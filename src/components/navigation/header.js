@@ -1,8 +1,26 @@
 import { Link } from 'react-router-dom';
 import SideDrawer from './sideNavigation';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { clearNotifications } from '../../store/reducers/notifications';
 
 const Header = () => {
+    const notifications = useSelector(state=> state.notifications);
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        let { global } = notifications;
+        if (notifications && global.error) {
+            console.log('error');
+            dispatch(clearNotifications());
+        }
+        if (notifications && global.success) {
+            console.log('success');
+            dispatch(clearNotifications());
+        }
+
+    },[notifications]);
+    // Detect notifications
 
     return(
         <nav className='navbar fixed-top'>
