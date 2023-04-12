@@ -3,6 +3,7 @@ import SideDrawer from './sideNavigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { clearNotifications } from '../../store/reducers/notifications';
+import { showToast } from '../../utils/tools';
 
 const Header = () => {
     const notifications = useSelector(state=> state.notifications);
@@ -11,11 +12,13 @@ const Header = () => {
     useEffect(()=>{
         let { global } = notifications;
         if (notifications && global.error) {
-            console.log('error');
+            const msg = global.msg ? global.msg : 'Error';
+            showToast('ERROR', msg);
             dispatch(clearNotifications());
         }
         if (notifications && global.success) {
-            console.log('success');
+            const msg = global.msg ? global.msg : 'Good!';
+            showToast('SUCCESS', msg);
             dispatch(clearNotifications());
         }
 
