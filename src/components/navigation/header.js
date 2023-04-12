@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
-import SideDrawer from './sideNavigation';
-import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import SideDrawer from './sideNavigation';
+
+import { useSelector, useDispatch } from 'react-redux';
 import { clearNotifications } from '../../store/reducers/notifications';
 import { showToast } from '../../utils/tools';
+import { signOut } from '../../store/actions/users';
 
 const Header = () => {
+    const users = useSelector(state=>state.users);
     const notifications = useSelector(state=> state.notifications);
     const dispatch = useDispatch();
 
@@ -25,12 +28,16 @@ const Header = () => {
     },[notifications]);
     // Detect notifications
 
+    const signOurUser = () => {
+       dispatch(signOut());
+    };
+
     return(
         <nav className='navbar fixed-top'>
             <Link to="/" className='navbar-brand d-flex align-items-center fredoka_ff'>
                 Flickbase
             </Link>
-            <SideDrawer/>
+            <SideDrawer users={users} signOurUser={signOurUser}/>
         </nav>
     )
 }

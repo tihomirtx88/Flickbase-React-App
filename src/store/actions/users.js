@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { errorGlobal, successGlobal } from '../reducers/notifications'
 import axios from 'axios'
-import { getAuthHeader } from '../../utils/tools';
+import { getAuthHeader, removeTokenCookie } from '../../utils/tools';
 
 export const registerUser = createAsyncThunk(
     'users/registerUser',
@@ -49,3 +49,10 @@ export const isAuth = createAsyncThunk(
         }
     }
 )
+
+export const signOut = createAsyncThunk(
+    'users/signOut',
+    async()=>{
+        removeTokenCookie();
+    }
+);
